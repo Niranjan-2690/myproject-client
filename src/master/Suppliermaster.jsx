@@ -4,6 +4,7 @@ function Suppliermaster() {
 
     const [supplierInfo, setSupplierInfo] = useState({suppliername: "", mobile: "", email: "", person: "", address: "", gst: "", status: "Active"})
     const [addSupplierInfo, setAddSupplierInfo] = useState([])
+    const [updatesupplier, setUpdatesupplier] = useState(null)
 
     //--------------------------------------------------------------------------
 
@@ -14,13 +15,39 @@ function Suppliermaster() {
     }
 
     //----------------------------------------------------------------------------
+    
+    // Adding Datas
 
     const addSupplier = () =>{
+        let supplierId = {id: Date.now(), ...supplierInfo}
         let newSupplier = [...addSupplierInfo]
-        newSupplier.push(supplierInfo)
+        newSupplier.push(supplierId)
         setAddSupplierInfo(newSupplier)
-        setSupplierInfo({suppliername: "", mobile: "", email: "", person: "", address: "", gst: "", status: "Active"})
+        setSupplierInfo({suppliername: "", mobile: "", email: "", person: "", address: "", gst: "", status: ""})
     }
+
+    //----------------------------------------------------------------------------
+
+    // Editing particular Data
+
+    const editSupplier = (id) =>{
+        let editSupplierInfo = addSupplierInfo.find((supplierId)=>{
+            return supplierId.id === id
+        })
+        setSupplierInfo({...editSupplierInfo})
+        setUpdatesupplier(id)
+    }
+
+    //-----------------------------------------------------------------------------
+
+    // Updating the data
+
+    const updateSupplier = (id) =>{
+
+    }
+
+
+
 
     return (
         <div>
@@ -53,8 +80,8 @@ function Suppliermaster() {
                 </div>
             </div>
             <div className="w-full flex justify-center gap-5">
-                <button className="bg-gray-800 text-white px-6 py-3 rounded-sm" onClick={addSupplier}>Add</button>
-                <button className="bg-gray-800 text-white px-6 py-3 rounded-sm">Clear</button>
+                {!updatesupplier ? <button className="bg-gray-800 text-white px-6 py-3 rounded-sm" onClick={addSupplier}>Add</button> : <button className="bg-gray-800 text-white px-6 py-3 rounded-sm" onClick={updateSupplier}>Update</button>}
+                {!updatesupplier ? <button className="bg-gray-800 text-white px-6 py-3 rounded-sm">Clear</button> : null}
             </div>
             </div>
             
@@ -62,6 +89,7 @@ function Suppliermaster() {
                 <table className="w-full border border-collapse border-gray-400">
                     <thead>
                         <tr>
+                            <th className="border border-gray-300">#</th>
                             <th className="border border-gray-300">Name</th>
                             <th className="border border-gray-300">Mobile</th>
                             <th className="border border-gray-300">Email</th>
@@ -76,6 +104,7 @@ function Suppliermaster() {
                     <tbody>
                         {addSupplierInfo.map((addedSupplier, idx)=>(
                         <tr key={idx}>
+                            <td className="border border-gray-300 px-2 py-1">{addedSupplier.id}</td>
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.suppliername}</td>
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.mobile}</td>
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.email}</td>
@@ -83,7 +112,7 @@ function Suppliermaster() {
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.address}</td>
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.gst}</td>
                             <td className="border border-gray-300 px-2 py-1">{addedSupplier.status}</td>
-                            <td className="border border-gray-300 text-center"><button><i className="fa-solid fa-pen-to-square text-yellow-500" ></i></button></td>
+                            <td className="border border-gray-300 text-center"><button onClick={()=>editSupplier(addedSupplier.id)}><i className="fa-solid fa-pen-to-square text-yellow-500" ></i></button></td>
                             <td className="border border-gray-300 text-center"><button><i className="fa-solid fa-trash text-red-500"></i></button></td>
                         </tr>
                         ))}
